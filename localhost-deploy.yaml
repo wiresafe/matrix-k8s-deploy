@@ -1,0 +1,35 @@
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: matrix
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: matrix
+    spec:
+      volumes:
+      - name: neo-disk
+        hostPath:
+          path: /data
+      containers:
+      - name: matrix
+        image: silviof/docker-matrix
+        env:
+          - name: SERVER_NAME
+            value: "neo.wiresafe.com"
+          - name: REPORT_STATS
+            value: "yes"
+        ports:
+          - containerPort: 8008
+            name: http
+        volumeMounts:
+        - mountPath: /data
+          name: neo-disk
+        livenessProbe:
+          httpGet:
+            path: /_matrix/client/
+            port: 8008
+          initialDelaySeconds: 30
+          periodSeconds: 10

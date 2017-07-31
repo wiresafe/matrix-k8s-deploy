@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: matrix
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: neo-wiresafe-com
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/tls-acme: "true"
+spec:
+  tls:
+  - secretName: neo-tls
+    hosts:
+    - neo.wiresafe.com
+  backend:
+    serviceName: matrix
+    servicePort: http
+  rules:
+    - host: neo.wiresafe.com
+      http:
+        paths:
+        - backend:
+            serviceName: matrix
+            servicePort: http
