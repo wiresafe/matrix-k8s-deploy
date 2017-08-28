@@ -22,7 +22,7 @@ $ kubectl -f service.yaml
 $ kubectl -f ingress.yaml
 ```
 
-Note2:
+Notes:
 
 1. In GKE, it will take several minutes for the ingress to
 deploy the load balancer.

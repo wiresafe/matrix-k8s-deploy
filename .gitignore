@@ -30,3 +30,6 @@ Temporary Items
 !/homeserver.yaml
 /data/
 /homeserver.yaml
+/data-prod-backup/
+.idea
+/.history/

@@ -9,13 +9,14 @@ spec:
       labels:
         app: matrix
     spec:
-      volumes:
-      - name: neo-disk
-        hostPath:
-          path: /data
+#      use the minikube built-in /data pv
+#      volumes:
+#      - name: neo-disk
+#        hostPath:
+#          path: /data
       containers:
       - name: matrix
-        image: silviof/docker-matrix
+        image: gcr.io/wiresafe-project/matrix
         env:
           - name: SERVER_NAME
             value: "neo.wiresafe.com"
@@ -24,12 +25,16 @@ spec:
         ports:
           - containerPort: 8008
             name: http
-        volumeMounts:
-        - mountPath: /data
-          name: neo-disk
-        livenessProbe:
+#        don't mount the pv when running from minikube
+#        volumeMounts:
+#        - mountPath: /data
+#          name: neo-disk
+        readinessProbe:
           httpGet:
             path: /_matrix/client/
-            port: 8008
+            port: http
           initialDelaySeconds: 30
           periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 5
+          failureThreshold: 10
